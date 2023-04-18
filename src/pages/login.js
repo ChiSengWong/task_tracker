@@ -9,22 +9,12 @@ console.log('Possible users: ');
 getDocs(usersRef).then((querySnapshot) => {
   console.log('------------------------------------');
   querySnapshot.forEach((doc) => {
+    console.log(doc.data());
     console.log("Username: " + doc.id);
     console.log("Password: " + doc.data().password);
     console.log('------------------------------------');
   });
 });
-
-// Add the password field to each User document
-// getDocs(usersRef).then((querySnapshot) => {
-//   querySnapshot.forEach((userDoc) => {
-//     const userId = userDoc.id;
-//     const userRef = doc(usersRef, userId);
-//     updateDoc(userRef, { password: 'password' });
-//   });
-//   console.log("Updated user passwords");
-// });
-
 
 function LoginScreen() {
   const [username, setUsername] = useState("");
@@ -47,7 +37,7 @@ function LoginScreen() {
     event.preventDefault();
 
     // Get the reference of the username/id in the database
-    const userRef = doc(db, "Users", username);
+    const userRef = doc(db, "Users", username.toLowerCase());
     try {
       const docSnap = await getDoc(userRef);
 

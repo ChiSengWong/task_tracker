@@ -76,9 +76,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginScreen />} />
+        <Route path="/"       element={<LoginScreen />} />
         <Route path="/signup" element={<SignupScreen />} />
-        <Route path="/home" element={homePage()} />
+        <Route path="/home"   element={homePage()} />
       </Routes>
     </Router>
   

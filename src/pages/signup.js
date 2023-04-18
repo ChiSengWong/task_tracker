@@ -1,7 +1,26 @@
 import React, { useState } from 'react';
-import { doc, getDoc, getDocs, collection, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, updateDoc } from 'firebase/firestore';
 import { db } from "../services/firebase"; 
 import "./styles/forms.css";
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const addUserToDatabase = async (username, password) => {
+  const userRef = doc(collection(db, 'Users'), username);
+  const userData = {
+    password: password,
+    tasks: {}
+  };
+
+  try {
+    await setDoc(userRef, userData);
+    console.log(`User ${username} added to the database.`);
+  } catch (error) {
+    console.error(`Error adding user ${username}: ${error}`);
+  }
+};
 
 
 function SignupScreen() {
@@ -26,25 +45,30 @@ function SignupScreen() {
       event.preventDefault();
   
       // Get the reference of the username/id in the database
-      const userRef = doc(db, "Users", username);
+      const userRef = doc(db, "Users", username.toLowerCase());
       try {
         const docSnap = await getDoc(userRef);
   
         if (docSnap.exists()) {
-          const userData = docSnap.data();
-  
-          // If password for current user is correct ...
-          if (userData.password === password) {
-            // Go to task home page 
-            window.location = './home';
-            console.log("Login successful!");
-          } else {
-            // password doesn't match, show error message
-            setErrorMessage("Incorrect password.");
-          }
+          setErrorMessage("User already exists")
         } else {
-          // user not found, show error message
-          setErrorMessage("Incorrect username");
+            const userData = docSnap.data();
+  
+          // If both passwords match
+          if (confPassword === password) {
+            // Show success message
+            setErrorMessage("Account Created")
+
+            // Add the new user to the database
+            await addUserToDatabase(username.toLowerCase(), password);
+
+            // Go to login page
+            sleep(2000);
+            window.location = './';
+          } else {
+            setErrorMessage("Passwords do not match");
+          }
+
         }
       } catch (e) {
         // print error message
