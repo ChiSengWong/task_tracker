@@ -1,4 +1,4 @@
-.login-form {
+.login-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -9,23 +9,29 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+
+  .login-container div {
+    margin: auto;
+  }
   
-  .login-form input {
+  .login-container input {
     width: 90%;
     padding: 10px;
     margin-bottom: 20px;
+    
     border: none;
     border-bottom: 1px solid #ccc;
     border-radius: 0;
     font-size: 16px;
   }
   
-  .login-form input:focus {
+  .login-container input:focus {
     outline: none;
     border-color: #007bff;
   }
   
-  .login-form button {
+  .login-container button {
+    margin: auto;
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
@@ -34,7 +40,7 @@
     cursor: pointer;
   }
   
-  .login-form button:hover {
+  .login-container button:hover {
     background-color: #0062cc;
   }
   

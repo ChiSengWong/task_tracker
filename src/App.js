@@ -79,8 +79,6 @@ function App() {
         <Route path="/home" element={homePage()} />
       </Routes>
     </Router>
-
-
   
   );
   }
