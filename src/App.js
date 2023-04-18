@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginScreen from './pages/login';
+import SignupScreen from './pages/signup';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import './App.css';
@@ -76,6 +77,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LoginScreen />} />
+        <Route path="/signup" element={<SignupScreen />} />
         <Route path="/home" element={homePage()} />
       </Routes>
     </Router>

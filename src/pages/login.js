@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { doc, getDoc, getDocs, collection, updateDoc } from 'firebase/firestore';
 import { db } from "../services/firebase"; 
-import "./styles/login.css";
+import "./styles/forms.css";
 
 const usersRef = collection(db, 'Users');
 
@@ -31,6 +31,10 @@ function LoginScreen() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const goToSignup = () => {
+    window.location = './signup';
+  };
+
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
@@ -42,13 +46,17 @@ function LoginScreen() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Get the reference of the username/id in the database
     const userRef = doc(db, "Users", username);
     try {
       const docSnap = await getDoc(userRef);
+
       if (docSnap.exists()) {
         const userData = docSnap.data();
+
+        // If password for current user is correct ...
         if (userData.password === password) {
-          // Correct login credentials, go to home task page 
+          // Go to task home page 
           window.location = './home';
           console.log("Login successful!");
         } else {
@@ -60,14 +68,16 @@ function LoginScreen() {
         setErrorMessage("Incorrect username");
       }
     } catch (e) {
+      // print error message
       console.error("Error getting user document:", e);
-      // show error message
+
+      // display error message
       setErrorMessage("An error occurred. Please try again later.");
     }
   };
 
   return (
-    <div className="login-container">
+    <div className="form-container">
       <h1>Login</h1>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
@@ -88,7 +98,10 @@ function LoginScreen() {
           />
         </div>
         <button type="submit">Sign In</button>
-        <button type="#">Sign up</button>
+        <div className='links'>
+          <a href="./signup">Sign Up</a>
+          <a href="#">Forgot Password?</a>
+        </div>
       </form>
     </div>
   );
