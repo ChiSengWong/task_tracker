@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginScreen from './pages/login';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import './App.css';
@@ -26,12 +28,28 @@ function App() {
   setTasks(updatedTasks);
   };
 
+  const homePage = () => {
+
+    return (
+    <React.Fragment>
+      <h1>Task Tracker</h1>
+      <TaskForm onCreate={handleCreate} />
+      <TaskList tasks={tasks} onEdit={handleEdit} onDelete={handleDelete} />
+    </React.Fragment>
+    );
+
+  }
+
   return (
-  <div>
-  <h1>Task Tracker</h1>
-  <TaskForm onCreate={handleCreate} />
-  <TaskList tasks={tasks} onEdit={handleEdit} onDelete={handleDelete} />
-  </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={homePage()} />
+        <Route path="/login" element={<LoginScreen />} />
+      </Routes>
+    </Router>
+
+
+  
   );
   }
 
