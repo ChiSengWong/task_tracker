@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css'
 function Task({ task, onEdit, onDelete }) {
     const [isEditing, setIsEditing] = useState(false);
@@ -52,7 +52,7 @@ function Task({ task, onEdit, onDelete }) {
   function TaskList({ tasks, onEdit, onDelete }) {
     return (
       <div>
-        {tasks.map((task) => (
+        {tasks?.map((task) => (
           <Task key={task.id} task={task} onEdit={onEdit} onDelete={onDelete} />
         ))}
       </div>

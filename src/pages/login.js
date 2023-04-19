@@ -49,7 +49,9 @@ function LoginScreen() {
         const userData = docSnap.data();
         if (userData.password === password) {
           // Correct login credentials, go to home task page 
-          window.location = './home';
+          //TODO: pass userId to taskTrackers
+          
+          window.location = `./home?username=${username}`;
           console.log("Login successful!");
         } else {
           // password doesn't match, show error message
