@@ -93,10 +93,11 @@ function TaskTracker() {
         processedList = processedList.filter((element) => element.status === "In Progress");
     if (isCheckedF === true)
         processedList = processedList.filter((element) => element.status === "Completed");
-    if (isCheckedDD === true)
-        processedList.sort((a, b) => {
+    if (isCheckedDD === true) 
+        processedList = Array.from(processedList).sort((a, b) => {
             return new Date(a.dueDate) - new Date(b.dueDate);
         });
+    
     setSortedList(processedList);
   }, [titleInput, isCheckedIP, isCheckedF, isCheckedDD, tasks]);
   // ------------------------------------------------
