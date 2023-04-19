@@ -118,7 +118,7 @@ function TaskTracker() {
         checked={isCheckedIP}
         onChange={handleCheckboxChangeIP}
       ></input>
-      <>In progress</>
+      <>In Progress</>
       <input
         type="checkbox"
         style={{ marginLeft: "10px", marginRight: "5px" }}

@@ -16,7 +16,7 @@ getDocs(usersRef).then((querySnapshot) => {
   });
 });
 
-function LoginScreen() {
+function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -87,11 +87,11 @@ function LoginScreen() {
         <button type="submit">Sign In</button>
         <div className='links'>
           <a href="./signup">Sign Up</a>
-          <a href="#">Forgot Password?</a>
+          <a href="./forgot">Forgot Password?</a>
         </div>
       </form>
     </div>
   );
 }
 
-export default LoginScreen;
+export default Login;

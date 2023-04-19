@@ -7,23 +7,21 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const addUserToDatabase = async (username, password) => {
+const changeUserPassword = async (username, password) => {
   const userRef = doc(collection(db, 'Users'), username);
   const userData = {
     password: password,
-    tasks: []
   };
 
   try {
-    await setDoc(userRef, userData);
-    console.log(`User ${username} added to the database.`);
-  } catch (error) {
-    console.error(`Error adding user ${username}: ${error}`);
+    updateDoc(userRef, userData).then(() => {console.log(`Updated ${username}'s password`)});
+
+} catch (error) {
+    console.error(`Error editing user ${username}: ${error}`);
   }
 };
 
-
-function Signup() {
+function ForgotPassword() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confPassword, setconfPassword] = useState("");
@@ -50,17 +48,15 @@ function Signup() {
         const docSnap = await getDoc(userRef);
   
         if (docSnap.exists()) {
-          setErrorMessage("User already exists")
-        } else {
             const userData = docSnap.data();
   
           // If both passwords match
           if (confPassword === password) {
             // Show success message
-            setErrorMessage("Account Created")
+            setErrorMessage("Account Password Change Successful");
 
-            // Add the new user to the database
-            await addUserToDatabase(username.toLowerCase(), password);
+            // Update the user's password
+            await changeUserPassword(username.toLowerCase(), password);
 
             // Go to login page
             sleep(2000);
@@ -68,7 +64,9 @@ function Signup() {
           } else {
             setErrorMessage("Passwords do not match");
           }
-
+        } else {
+          setErrorMessage("User does not exist")
+        
         }
       } catch (e) {
         // print error message
@@ -81,7 +79,7 @@ function Signup() {
   
     return (
       <div className="form-container">
-        <h1>Sign Up</h1>
+        <h1>Forgot Password</h1>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <form onSubmit={handleSubmit}>
           <div>
@@ -95,7 +93,7 @@ function Signup() {
           <div>
             <input
               type="password"
-              placeholder="Password"
+              placeholder="New Password"
               value={password}
               onChange={handlePasswordChange}
             />
@@ -108,14 +106,14 @@ function Signup() {
               onChange={handleconfPasswordChange}
             />
           </div>
-          <button type="submit">Sign up</button>
+          <button type="submit">Reset Password</button>
           <div className='links'>
             <a href="./">Login</a>
-            <a href="./forgot">Forgot Password?</a>
+            <a href="./signup">Sign Up</a>
           </div>
         </form>
       </div>
     );
   }
   
-  export default Signup;
+  export default ForgotPassword;
