@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
 import './styles/taskTracker.css';
 import {db} from '../services/firebase';
 import 'firebase/firestore';
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 function TaskTracker() {
-    //get username from url params
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const username = searchParams.get('username')
-    const userRef = doc(db, "Users", username);
-
+    const userRef = doc(db, "Users", localStorage.getItem("username"));
     const [tasks, setTasks] = useState([]);
 
     // Get tasks from db on mount
@@ -29,7 +23,7 @@ function TaskTracker() {
         }
     }
     getTasks();
-    }, [userRef]);
+    }, []);
 
     async function handleCreate(task){
     const updatedTasks = [...tasks, { id: Date.now(), ...task }];
@@ -38,7 +32,6 @@ function TaskTracker() {
     };
 
     async function handleEdit(updatedTask){
-        console.log('task is ' + tasks)
     const updatedTasks = tasks.map((task) => {
         if (task.id === updatedTask.id) {
         return updatedTask;
@@ -56,7 +49,7 @@ function TaskTracker() {
     };
 
     async function updateTask(updatedTasks){
-    await setDoc(userRef, {
+    await updateDoc(userRef, {
         tasks: updatedTasks
     }).catch((error) => { console.error("Error writing document: ", error)})
     }
