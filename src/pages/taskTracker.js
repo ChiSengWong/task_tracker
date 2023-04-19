@@ -31,6 +31,7 @@ function TaskTracker() {
   async function handleCreate(task) {
     const updatedTasks = [...tasks, { id: Date.now(), ...task }];
     setTasks(updatedTasks);
+    setSortedList(tasks)
     await updateTask(updatedTasks);
   }
 
@@ -42,12 +43,14 @@ function TaskTracker() {
       return task;
     });
     setTasks(updatedTasks);
+    setSortedList(tasks)
     await updateTask(updatedTasks);
   }
 
   const handleDelete = (taskId) => {
     const updatedTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(updatedTasks);
+    setSortedList(tasks)
     updateTask(updatedTasks);
   };
 
@@ -84,7 +87,7 @@ function TaskTracker() {
     // Sort functionality
     if (titleInput !== "") {
       setSortedList(
-        sortedList.filter((element) => element.title.includes(titleInput))
+        sortedList.filter((element) => element.title.toLowerCase().includes(titleInput))
       );
     } else {
       setSortedList(tasks);
@@ -110,11 +113,9 @@ function TaskTracker() {
       setSortedList(sortedArray);
     }
 
-    if (tasks !== sortedList) {
-        setSortedList(tasks)
-    }
-
+    console.log(titleInput)
     console.log(sortedList);
+
   }, [titleInput, isCheckedIP, isCheckedF, isCheckedDD, tasks]);
   // ------------------------------------------------
   return (
