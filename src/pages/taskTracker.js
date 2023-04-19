@@ -61,9 +61,9 @@ function TaskTracker() {
       console.error("Error writing document: ", error);
     });
   }
+
   // ---------------- Sort Function ----------------
   const [titleInput, setTitleInput] = useState("");
-
 
   const handleInputChange = (event) => {
     setTitleInput(event.target.value);
@@ -84,38 +84,20 @@ function TaskTracker() {
   };
 
   useEffect(() => {
+    console.log("useEffect called")
     // Sort functionality
-    if (titleInput !== "") {
-      setSortedList(
-        sortedList.filter((element) => element.title.toLowerCase().includes(titleInput))
-      );
-    } else {
-      setSortedList(tasks);
-    }
-
-    if (isCheckedIP === true) {
-      setSortedList(
-        sortedList.filter((element) => element.status == "In Progress")
-      );
-    }
-
-    if (isCheckedF === true) {
-      setSortedList(
-        sortedList.filter((element) => element.status == "Completed")
-      );
-    }
-    if (isCheckedDD === true) {
-      const sortedArray = Array.from(sortedList).sort((a, b) => {
-        const dateA = new Date(a.dueDate);
-        const dateB = new Date(b.dueDate);
-        return dateA - dateB;
-      });
-      setSortedList(sortedArray);
-    }
-
-    console.log(titleInput)
-    console.log(sortedList);
-
+    var processedList = tasks;
+    if (titleInput !== "")
+        processedList = processedList.filter((element) => element.title.toLowerCase().includes(titleInput));
+    if (isCheckedIP === true)
+        processedList = processedList.filter((element) => element.status === "In Progress");
+    if (isCheckedF === true)
+        processedList = processedList.filter((element) => element.status === "Completed");
+    if (isCheckedDD === true)
+        processedList.sort((a, b) => {
+            return new Date(a.dueDate) - new Date(b.dueDate);
+        });
+    setSortedList(processedList);
   }, [titleInput, isCheckedIP, isCheckedF, isCheckedDD, tasks]);
   // ------------------------------------------------
   return (
