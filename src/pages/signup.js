@@ -11,7 +11,7 @@ const addUserToDatabase = async (username, password) => {
   const userRef = doc(collection(db, 'Users'), username);
   const userData = {
     password: password,
-    tasks: {}
+    tasks: []
   };
 
   try {
